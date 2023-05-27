@@ -5,7 +5,7 @@ var router = express.Router();
 
 /* API Home page. */
 router.get("/", function (req, res, next) {
-  res.render("index", { title: "Dentel X - API" });
+  res.render("index", { title: "Dentel X - API - Prueba" });
 });
 
 // Router linking
