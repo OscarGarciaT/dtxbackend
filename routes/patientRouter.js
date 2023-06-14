@@ -1,20 +1,20 @@
 const { Router } = require("express");
 const router = Router();
-const patientController = require("../controllers/patientController"); // May need to change route
+const patientController = require("../controllers/patientController");
 
 // Get all
-router.get("/", patientController.getAll);
+router.get("/:doctorId", patientController.getAll);
 
 // Create
-router.post("/", patientController.create);
+router.post("/:doctorId", patientController.create);
 
 // Read
-router.get("/:patientId", patientController.get);
+router.get("/:doctorId/patient/:patientId", patientController.get);
 
 // Update
-router.put("/:patientId", patientController.update);
+router.put("/:doctorId/patient/:patientId", patientController.update);
 
 // Delete
-router.delete("/:patientId", patientController.delete);
+router.delete("/:doctorId/patient/:patientId", patientController.delete);
 
 module.exports = router;
