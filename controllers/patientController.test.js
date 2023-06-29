@@ -1,18 +1,18 @@
-const patientManager = require("../managers/patientManager");
-const patientController = require("./patientController");
+const patientManager = require('../managers/patientManager');
+const patientController = require('./patientController');
 
-jest.mock("../managers/patientManager"); // Mock del patientManager
+jest.mock('../managers/patientManager'); // Mock del patientManager
 
-describe("Patient Controller", () => {
+describe('Patient Controller', () => {
   afterEach(() => {
     jest.resetAllMocks(); // Restablecer los mocks después de cada prueba
   });
 
-  test("Obtener todos los pacientes", async () => {
-    const patients = [{ name: "John" }, { name: "Jane" }];
+  test('Obtener todos los pacientes', async () => {
+    const patients = [{name: 'John'}, {name: 'Jane'}];
     patientManager.getAll.mockResolvedValue(patients);
     const sendMock = jest.fn();
-    const res = { status: jest.fn().mockReturnValue({ send: sendMock }) };
+    const res = {status: jest.fn().mockReturnValue({send: sendMock})};
 
     await patientController.getAll({}, res);
 
@@ -21,13 +21,13 @@ describe("Patient Controller", () => {
     expect(sendMock).toHaveBeenCalledWith(patients);
   });
 
-  test("Crear un paciente", async () => {
-    const patientData = { name: "John" };
-    const newPatient = { _id: "123", ...patientData };
+  test('Crear un paciente', async () => {
+    const patientData = {name: 'John'};
+    const newPatient = {_id: '123', ...patientData};
     patientManager.create.mockResolvedValue(newPatient);
     const sendMock = jest.fn();
-    const res = { status: jest.fn().mockReturnValue({ send: sendMock }) };
-    const req = { body: { patientData } };
+    const res = {status: jest.fn().mockReturnValue({send: sendMock})};
+    const req = {body: {patientData}};
 
     await patientController.create(req, res);
 
@@ -37,13 +37,13 @@ describe("Patient Controller", () => {
     expect(sendMock).toHaveBeenCalledWith(newPatient);
   });
 
-  test("Obtener un paciente por ID", async () => {
-    const patientId = "123";
-    const patient = { _id: patientId, name: "John" };
+  test('Obtener un paciente por ID', async () => {
+    const patientId = '123';
+    const patient = {_id: patientId, name: 'John'};
     patientManager.get.mockResolvedValue(patient);
     const sendMock = jest.fn();
-    const res = { status: jest.fn().mockReturnValue({ send: sendMock }) };
-    const req = { params: { patientId } };
+    const res = {status: jest.fn().mockReturnValue({send: sendMock})};
+    const req = {params: {patientId}};
 
     await patientController.get(req, res);
 
@@ -53,14 +53,14 @@ describe("Patient Controller", () => {
     expect(sendMock).toHaveBeenCalledWith(patient);
   });
 
-  test("Actualizar un paciente", async () => {
-    const patientId = "123";
-    const patientData = { name: "John" };
-    const updatedPatient = { _id: patientId, ...patientData };
+  test('Actualizar un paciente', async () => {
+    const patientId = '123';
+    const patientData = {name: 'John'};
+    const updatedPatient = {_id: patientId, ...patientData};
     patientManager.update.mockResolvedValue(updatedPatient);
     const sendMock = jest.fn();
-    const res = { status: jest.fn().mockReturnValue({ send: sendMock }) };
-    const req = { params: { patientId }, body: patientData };
+    const res = {status: jest.fn().mockReturnValue({send: sendMock})};
+    const req = {params: {patientId}, body: patientData};
 
     await patientController.update(req, res);
 
@@ -70,13 +70,13 @@ describe("Patient Controller", () => {
     expect(sendMock).toHaveBeenCalledWith(updatedPatient);
   });
 
-  test("Eliminar un paciente", async () => {
-    const patientId = "123";
-    const deletedPatient = { _id: patientId, name: "John" };
+  test('Eliminar un paciente', async () => {
+    const patientId = '123';
+    const deletedPatient = {_id: patientId, name: 'John'};
     patientManager.delete.mockResolvedValue(deletedPatient);
     const sendMock = jest.fn();
-    const res = { status: jest.fn().mockReturnValue({ send: sendMock }) };
-    const req = { params: { patientId } };
+    const res = {status: jest.fn().mockReturnValue({send: sendMock})};
+    const req = {params: {patientId}};
 
     await patientController.delete(req, res);
 
