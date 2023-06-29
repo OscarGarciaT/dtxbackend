@@ -1,31 +1,29 @@
-const doctorModel = require("../models/doctorModel");
+const doctorModel = require('../models/doctorModel');
 
 exports.getAllDoctorPatients = async (doctorId, searchQuery) => {
   const doctor = await doctorModel.findById(doctorId);
   const patients = doctor.doctor_pacientes;
 
-  console.log(searchQuery)
-
   if (!searchQuery) {
     return patients;
   }
-  
+
   const queryRegex = new RegExp(searchQuery, 'i'); // Case-insensitive regex pattern
-  
-  const filteredPatients = patients.filter(patient => {
-    const { nombres, apellidos, celular } = patient;
-    
+
+  const filteredPatients = patients.filter((patient) => {
+    const {nombres, apellidos, celular} = patient;
+
     // Check if any of the fields match the searchQuery
     const matchNombres = nombres.match(queryRegex);
     const matchApellidos = apellidos.match(queryRegex);
     const matchCelular = celular.match(queryRegex);
-    
+
     // Match if the query is a combination of nombres followed by apellidos
     const matchCombination = `${nombres} ${apellidos}`.match(queryRegex);
-    
+
     return matchNombres || matchApellidos || matchCelular || matchCombination;
   });
-  
+
   return filteredPatients;
 };
 

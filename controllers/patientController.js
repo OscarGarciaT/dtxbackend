@@ -1,23 +1,22 @@
-const patientManager = require("../managers/patientManager");
+const patientManager = require('../managers/patientManager');
 
 exports.getAll = async (req, res) => {
   try {
-    const { doctorId } = req.params;
-    const { searchQuery } = req.query;
+    const {doctorId} = req.params;
+    const {searchQuery: query} = req.query;
 
-    console.log(JSON.stringify(req.query))
+    const patients = await patientManager.getAllDoctorPatients(doctorId, query);
 
-    const patients = await patientManager.getAllDoctorPatients(doctorId, searchQuery);
     res.status(200).send(patients);
   } catch (err) {
     console.error(err?.message);
-    res.status(500).send({ message: "Internal server error" });
+    res.status(500).send({message: 'Internal server error'});
   }
 };
 
 exports.create = async (req, res) => {
   try {
-    const { doctorId } = req.params;
+    const {doctorId} = req.params;
 
     const {
       antecedentes_familiares,
@@ -53,35 +52,35 @@ exports.create = async (req, res) => {
 
     const patient = await patientManager.createDoctorPatient(
       doctorId,
-      newPatientData
+      newPatientData,
     );
 
     res.status(200).send(patient);
   } catch (err) {
-    console.error(err?.message)
-    res.status(500).send({ message: "Error interno del servidor" });
+    console.error(err?.message);
+    res.status(500).send({message: 'Error interno del servidor'});
   }
 };
 
 exports.get = async (req, res) => {
-  const { doctorId, patientId } = req.params;
+  const {doctorId, patientId} = req.params;
   const patient = await patientManager.getDoctorPatient(doctorId, patientId);
   res.status(200).send(patient);
 };
 
 exports.update = async (req, res) => {
-  const { doctorId, patientId } = req.params;
+  const {doctorId, patientId} = req.params;
   const patientData = req.body;
   const patient = await patientManager.updateDoctorPatient(
     doctorId,
     patientId,
-    patientData
+    patientData,
   );
   res.status(200).send(patient);
 };
 
 exports.delete = async (req, res) => {
-  const { doctorId, patientId } = req.params;
+  const {doctorId, patientId} = req.params;
   const patient = await patientManager.deleteDoctorPatient(doctorId, patientId);
   res.status(200).send(patient);
 };
