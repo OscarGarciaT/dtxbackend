@@ -31,10 +31,12 @@ const patientSchema = new Schema(
 
 const appointmentSchema = new Schema(
   {
-    estado: {type: Schema.Types.String, required: true},
+    //estado: {type: Schema.Types.String, required: true},
     motivo: {type: Schema.Types.String, required: true},
     fecha_cita: {type: Schema.Types.String, required: true},
-    paciente: {type: Schema.Types.ObjectId, required: true},
+    hora_inicio_cita: {type: Schema.Types.String, required: true},
+    hora_fin_cita:{type: Schema.Types.String, required: true},
+    paciente_id: {type: Schema.Types.String, required: true},
   },
   {
     timestamps: true,

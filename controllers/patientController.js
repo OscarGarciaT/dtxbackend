@@ -84,3 +84,26 @@ exports.delete = async (req, res) => {
   const patient = await patientManager.deleteDoctorPatient(doctorId, patientId);
   res.status(200).send(patient);
 };
+
+exports.createAppointment = async(req, res) => {
+  const {doctorId} = req.params;
+
+  const {
+    paciente_id,
+    fecha_cita,
+    hora_inicio_cita,
+    hora_fin_cita,
+    motivo
+  } = req.body.appointmentData;
+
+  const newAppointmentData = {
+    paciente_id,
+    fecha_cita,
+    hora_inicio_cita,
+    hora_fin_cita,
+    motivo
+  };
+
+  const patient = await patientManager.createDoctorAppointment(doctorId, newAppointmentData)
+  res.status(200).send(patient)
+}

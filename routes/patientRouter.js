@@ -18,4 +18,7 @@ router.put('/:doctorId/patient/:patientId', patientController.update);
 // Delete
 router.delete('/:doctorId/patient/:patientId', patientController.delete);
 
+//Add Appointment
+router.post('/:doctorId/create_appointment', patientController.createAppointment);
+
 module.exports = router;
