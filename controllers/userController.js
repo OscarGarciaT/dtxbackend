@@ -164,3 +164,10 @@ exports.createUser = async (req, res) => {
     return res.status(500).send({message: 'Internal server error'});
   }
 };
+
+exports.getUserLoginInfo = async (req, res) => {
+  const user = await UserModel.findOne({_id: req.params.userId}).lean();
+  const userInfo = await userManager.getDetails(user);
+  userInfo.authorization_token = req.headers.authorization?.split(' ')[1];
+  return res.status(200).send(userInfo);
+};

@@ -15,6 +15,7 @@
     "no-param-reassign": "off",
     "prefer-destructuring": ["error", {"object": true, "array": false}],
     "no-console": ["error", {"allow": ["warn", "error"]}],
-    "object-curly-spacing": ["error", "never"]
+    "object-curly-spacing": ["error", "never"],
+    "linebreak-style": 0
   }
 }
