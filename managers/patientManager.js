@@ -31,7 +31,8 @@ exports.createDoctorPatient = async (doctorId, patientData) => {
   const doctor = await doctorModel.findById(doctorId);
   doctor.doctor_pacientes.push(patientData);
   await doctor.save();
-  const newPatient = doctor.doctor_pacientes[doctor.doctor_pacientes.length - 1];
+  const newPatient =
+    doctor.doctor_pacientes[doctor.doctor_pacientes.length - 1];
   return newPatient;
 };
 
@@ -57,11 +58,12 @@ exports.deleteDoctorPatient = async (doctorId, patientId) => {
   return patient;
 };
 
-exports.createDoctorAppointment = async(doctorId, appointmentData) => {
+exports.createDoctorAppointment = async (doctorId, appointmentData) => {
   const doctor = await doctorModel.findById(doctorId);
   //console.log(appointmentData)
   doctor.doctor_citas.push(appointmentData);
   await doctor.save();
-  const newAppointmentData = doctor.doctor_citas[doctor.doctor_citas.length -1];
+  const newAppointmentData =
+    doctor.doctor_citas[doctor.doctor_citas.length - 1];
   return newAppointmentData;
-}
+};
