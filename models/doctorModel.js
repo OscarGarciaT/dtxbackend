@@ -23,6 +23,8 @@ const patientSchema = new Schema(
     salud_bucal: {type: Schema.Types.Mixed},
     signos_vitales: {type: Schema.Types.Mixed},
     sistema_estomatognatico: {type: Schema.Types.Mixed},
+    diagnosticos: {type: [Schema.Types.Mixed]},
+    tratamientos: {type: [Schema.Types.Mixed]},
   },
   {
     timestamps: true,
