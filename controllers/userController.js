@@ -171,3 +171,5 @@ exports.getUserLoginInfo = async (req, res) => {
   userInfo.authorization_token = req.headers.authorization?.split(' ')[1];
   return res.status(200).send(userInfo);
 };
+
+exports.createDoctorByUser = createDoctorByUser;
