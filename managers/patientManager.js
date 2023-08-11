@@ -1,5 +1,4 @@
 const { default: mongoose } = require('mongoose');
-const doctorModel = require('../models/doctorModel');
 const PatientModel = require('../models/patientModel')
 
 exports.getAllPatientsByDoctor = async (targetDoctorId, searchQuery) => {
@@ -70,20 +69,4 @@ exports.deletePatient = async (patientId) => {
       console.error('Error deleting patient', error);
     })
     return patient;
-};
-
-exports.createDoctorAppointment = async (doctorId, appointmentData) => {
-  const doctor = await doctorModel.findById(doctorId);
-  //console.log(appointmentData)
-  doctor.doctor_citas.push(appointmentData);
-  await doctor.save();
-  const newAppointmentData =
-    doctor.doctor_citas[doctor.doctor_citas.length - 1];
-  return newAppointmentData;
-};
-
-exports.getAllDoctorAppointments = async (doctorId) => {
-  const doctor = await doctorModel.findById(doctorId);
-  const apts = doctor.doctor_citas;
-  return apts
 };

@@ -130,36 +130,3 @@ exports.delete = async (req, res) => {
   const patient = await patientManager.deletePatient(patientId);
   res.status(200).send(patient);
 };
-
-exports.createAppointment = async (req, res) => {
-  const {doctorId} = req.params;
-
-  const {paciente_id, fecha_cita, hora_inicio_cita, hora_fin_cita, motivo} =
-    req.body.appointmentData;
-
-  const newAppointmentData = {
-    paciente_id,
-    fecha_cita,
-    hora_inicio_cita,
-    hora_fin_cita,
-    motivo,
-  };
-
-  const patient = await patientManager.createDoctorAppointment(
-    doctorId,
-    newAppointmentData,
-  );
-  res.status(200).send(patient);
-};
-
-exports.appointments = async (req, res) => {
-  try {
-    const {doctorId} = req.params;
-    const appointments = await patientManager.getAllDoctorAppointments(doctorId);
-    res.status(200).send(appointments);
-  } catch (err) {
-    console.error(err?.message);
-    res.status(500).send({message: 'Internal server error'});
-  }
-
-};
