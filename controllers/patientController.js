@@ -152,3 +152,15 @@ exports.createAppointment = async (req, res) => {
   );
   res.status(200).send(patient);
 };
+
+exports.appointments = async (req, res) => {
+  try {
+    const {doctorId} = req.params;
+    const appointments = await patientManager.getAllDoctorAppointments(doctorId);
+    res.status(200).send(appointments);
+  } catch (err) {
+    console.error(err?.message);
+    res.status(500).send({message: 'Internal server error'});
+  }
+
+};

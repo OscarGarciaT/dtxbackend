@@ -22,4 +22,7 @@ router.delete('/:doctorId/patient/:patientId', auth.authenticateToken, patientCo
 // Add Appointment
 router.post('/:doctorId/create_appointment', auth.authenticateToken, patientController.createAppointment);
 
+// Get Appointments
+router.get('/:doctorId/appointments', auth.authenticateToken, patientController.appointments);
+
 module.exports = router;
