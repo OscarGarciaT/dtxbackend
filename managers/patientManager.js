@@ -67,3 +67,9 @@ exports.createDoctorAppointment = async (doctorId, appointmentData) => {
     doctor.doctor_citas[doctor.doctor_citas.length - 1];
   return newAppointmentData;
 };
+
+exports.getAllDoctorAppointments = async (doctorId) => {
+  const doctor = await doctorModel.findById(doctorId);
+  const apts = doctor.doctor_citas;
+  return apts
+};
