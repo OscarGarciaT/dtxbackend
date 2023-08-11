@@ -1,8 +1,9 @@
-const doctorModel = require('../models/doctorModel');
+const { default: mongoose } = require('mongoose');
+const PatientModel = require('../models/patientModel')
 
-exports.getAllDoctorPatients = async (doctorId, searchQuery) => {
-  const doctor = await doctorModel.findById(doctorId);
-  const patients = doctor.doctor_pacientes;
+exports.getAllPatientsByDoctor = async (targetDoctorId, searchQuery) => {
+  const doctorObjectId = new mongoose.Types.ObjectId(targetDoctorId)
+  const patients = await PatientModel.find({doctor_id: doctorObjectId})
 
   if (!searchQuery) {
     return patients;
@@ -27,49 +28,45 @@ exports.getAllDoctorPatients = async (doctorId, searchQuery) => {
   return filteredPatients;
 };
 
-exports.createDoctorPatient = async (doctorId, patientData) => {
-  const doctor = await doctorModel.findById(doctorId);
-  doctor.doctor_pacientes.push(patientData);
-  await doctor.save();
-  const newPatient =
-    doctor.doctor_pacientes[doctor.doctor_pacientes.length - 1];
-  return newPatient;
-};
-
-exports.getDoctorPatient = async (doctorId, patientId) => {
-  const doctor = await doctorModel.findById(doctorId);
-  const patient = doctor.doctor_pacientes.id(patientId);
+exports.createPatient = async (doctorId, patientData) => {
+  const doctorObjectId = new mongoose.Types.ObjectId(doctorId);
+  patientData.doctor_id =  doctorObjectId;
+  const patient = new PatientModel(patientData);
+  patient.save()
+    .then(savedPatient => {
+      console.log("Patient saved succesfuly", savedPatient)
+    })
+    .catch(error => {
+      console.log("Error saving new patient", error)
+    })
   return patient;
 };
 
-exports.updateDoctorPatient = async (doctorId, patientId, patientData) => {
-  const doctor = await doctorModel.findById(doctorId);
-  const patient = doctor.doctor_pacientes.id(patientId);
-  Object.assign(patient, patientData);
-  await doctor.save();
+exports.getPatientById = async (patientId) => {
+  const patientObjectId = new mongoose.Types.ObjectId(patientId);
+  const patient = PatientModel.findById(patientObjectId);
   return patient;
 };
 
-exports.deleteDoctorPatient = async (doctorId, patientId) => {
-  const doctor = await doctorModel.findById(doctorId);
-  const patient = doctor.doctor_pacientes.id(patientId);
-  patient.remove();
-  await doctor.save();
-  return patient;
+exports.updatePatient = async (patientId, patientData) => {
+  PatientModel.updateOne({_id: patientId}, patientData)
+    .then(updatedPatient => {
+      console.log('Patient updated succesfully', updatedPatient);
+    })
+    .catch(error => {
+      console.log('Error updating patient')
+    })
+  return PatientModel.findById(patientId)
 };
 
-exports.createDoctorAppointment = async (doctorId, appointmentData) => {
-  const doctor = await doctorModel.findById(doctorId);
-  //console.log(appointmentData)
-  doctor.doctor_citas.push(appointmentData);
-  await doctor.save();
-  const newAppointmentData =
-    doctor.doctor_citas[doctor.doctor_citas.length - 1];
-  return newAppointmentData;
-};
-
-exports.getAllDoctorAppointments = async (doctorId) => {
-  const doctor = await doctorModel.findById(doctorId);
-  const apts = doctor.doctor_citas;
-  return apts
+exports.deletePatient = async (patientId) => {
+  const patient = PatientModel.findById(patientId);
+  PatientModel.deleteOne({_id: patientId})
+    .then(result => {
+      console.log('Patient deleted successfully', result);
+    })
+    .catch(error => {
+      console.error('Error deleting patient', error);
+    })
+    return patient;
 };

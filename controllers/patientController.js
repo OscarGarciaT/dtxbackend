@@ -5,7 +5,7 @@ exports.getAll = async (req, res) => {
     const {doctorId} = req.params;
     const {searchQuery: query} = req.query;
 
-    const patients = await patientManager.getAllDoctorPatients(doctorId, query);
+    const patients = await patientManager.getAllPatientsByDoctor(doctorId, query);
 
     res.status(200).send(patients);
   } catch (err) {
@@ -50,7 +50,7 @@ exports.create = async (req, res) => {
       sistema_estomatognatico,
     };
 
-    const patient = await patientManager.createDoctorPatient(
+    const patient = await patientManager.createPatient(
       doctorId,
       newPatientData,
     );
@@ -64,7 +64,7 @@ exports.create = async (req, res) => {
 
 exports.get = async (req, res) => {
   const {doctorId, patientId} = req.params;
-  const patient = await patientManager.getDoctorPatient(doctorId, patientId);
+  const patient = await patientManager.getPatientById(patientId);
   res.status(200).send(patient);
 };
 
@@ -117,8 +117,7 @@ exports.update = async (req, res) => {
     tratamientos: newTratamientos ?? [],
   };
 
-  const patient = await patientManager.updateDoctorPatient(
-    doctorId,
+  const patient = await patientManager.updatePatient(
     patientId,
     newPatientData,
   );
@@ -128,39 +127,6 @@ exports.update = async (req, res) => {
 
 exports.delete = async (req, res) => {
   const {doctorId, patientId} = req.params;
-  const patient = await patientManager.deleteDoctorPatient(doctorId, patientId);
+  const patient = await patientManager.deletePatient(patientId);
   res.status(200).send(patient);
-};
-
-exports.createAppointment = async (req, res) => {
-  const {doctorId} = req.params;
-
-  const {paciente_id, fecha_cita, hora_inicio_cita, hora_fin_cita, motivo} =
-    req.body.appointmentData;
-
-  const newAppointmentData = {
-    paciente_id,
-    fecha_cita,
-    hora_inicio_cita,
-    hora_fin_cita,
-    motivo,
-  };
-
-  const patient = await patientManager.createDoctorAppointment(
-    doctorId,
-    newAppointmentData,
-  );
-  res.status(200).send(patient);
-};
-
-exports.appointments = async (req, res) => {
-  try {
-    const {doctorId} = req.params;
-    const appointments = await patientManager.getAllDoctorAppointments(doctorId);
-    res.status(200).send(appointments);
-  } catch (err) {
-    console.error(err?.message);
-    res.status(500).send({message: 'Internal server error'});
-  }
-
 };
