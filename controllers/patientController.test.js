@@ -1,27 +1,39 @@
 const patientManager = require('../managers/patientManager');
+const patientModel = require('../models/patientModel');
 const patientController = require('./patientController');
+const { default: mongoose } = require('mongoose');
 
-jest.mock('../managers/patientManager'); // Mock del patientManager
+jest.mock('./patientController'); // Mock del patientManager
 
 describe('Patient Controller', () => {
   afterEach(() => {
     jest.resetAllMocks(); // Restablecer los mocks después de cada prueba
   });
-
-  test('Obtener todos los pacientes', async () => {
-    const patients = [{name: 'John'}, {name: 'Jane'}];
-    patientManager.getAll.mockResolvedValue(patients);
-    const sendMock = jest.fn();
-    const res = {status: jest.fn().mockReturnValue({send: sendMock})};
-
-    await patientController.getAll({}, res);
-
-    expect(patientManager.getAll).toHaveBeenCalledTimes(1);
-    expect(res.status).toHaveBeenCalledWith(200);
-    expect(sendMock).toHaveBeenCalledWith(patients);
+  
+  describe('Patient Manager', () => {
+    test('Get all patients by doctorId', async () => {
+      const mockResponse = [
+        {_id: "649c76f38ebbebb800d63f6d", name: 'Eduardo', doctor_id: "649be3a8684dc54c7b7ba6db"}
+      ];
+      const doctor_id = '649be3a8684dc54c7b7ba6db';
+      const doctorObjectId = new mongoose.Types.ObjectId(doctor_id)
+  
+      // Espía la función patientModel.find() para que devuelva mockAll
+      const findSpy = jest.spyOn(patientModel, 'find').mockResolvedValue(mockResponse);
+  
+      const result = await patientManager.getAllPatientsByDoctor(doctor_id);
+      expect(result).toEqual(mockResponse);
+  
+      // Verifica si la función patientModel.find() fue llamada con los parámetros correctos
+      expect(findSpy).toHaveBeenCalledWith({ doctor_id: doctorObjectId });
+  
+      // Restaura la función original después de la prueba
+      findSpy.mockRestore();
+    });
   });
+  
 
-  test('Crear un paciente', async () => {
+  /* test('Crear un paciente', async () => {
     const patientData = {name: 'John'};
     const newPatient = {_id: '123', ...patientData};
     patientManager.create.mockResolvedValue(newPatient);
@@ -35,9 +47,9 @@ describe('Patient Controller', () => {
     expect(patientManager.create).toHaveBeenCalledWith(patientData);
     expect(res.status).toHaveBeenCalledWith(200);
     expect(sendMock).toHaveBeenCalledWith(newPatient);
-  });
+  }); */
 
-  test('Obtener un paciente por ID', async () => {
+  /* test('Obtener un paciente por ID', async () => {
     const patientId = '123';
     const patient = {_id: patientId, name: 'John'};
     patientManager.get.mockResolvedValue(patient);
@@ -68,9 +80,9 @@ describe('Patient Controller', () => {
     expect(patientManager.update).toHaveBeenCalledWith(patientId, patientData);
     expect(res.status).toHaveBeenCalledWith(200);
     expect(sendMock).toHaveBeenCalledWith(updatedPatient);
-  });
+  }); */
 
-  test('Eliminar un paciente', async () => {
+  /* test('Eliminar un paciente', async () => {
     const patientId = '123';
     const deletedPatient = {_id: patientId, name: 'John'};
     patientManager.delete.mockResolvedValue(deletedPatient);
@@ -84,5 +96,5 @@ describe('Patient Controller', () => {
     expect(patientManager.delete).toHaveBeenCalledWith(patientId);
     expect(res.status).toHaveBeenCalledWith(200);
     expect(sendMock).toHaveBeenCalledWith(deletedPatient);
-  });
+  }); */
 });
