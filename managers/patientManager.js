@@ -70,3 +70,10 @@ exports.deletePatient = async (patientId) => {
     })
     return patient;
 };
+
+const DiagnosesModel = require('../models/diagnosisModel').UnifiedDiagnosis
+
+exports.getAllDiagnoses = async() => {
+  const diagnoses  = DiagnosesModel.find({})
+  return diagnoses;
+}

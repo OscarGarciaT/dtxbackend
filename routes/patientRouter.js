@@ -4,6 +4,9 @@ const router = Router();
 const patientController = require('../controllers/patientController');
 const auth = require('../controllers/authController');
 
+//Get all Diagnoses
+router.get('/diagnoses', auth.authenticateToken, patientController.getAllDiagnoses);
+
 // Get all
 router.get('/:doctorId', auth.authenticateToken, patientController.getAll);
 
