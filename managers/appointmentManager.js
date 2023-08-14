@@ -4,16 +4,16 @@ const AppointmentModel = require('../models/appointmentModel');
 exports.createDoctorAppointment = async (doctorId, appointmentData) => {
     const doctorObjectId = new mongoose.Types.ObjectId(doctorId)
     appointmentData.doctor_id = doctorObjectId
-    const appointment = new AppointmentModel(appointmentData)
-    appointment.save()
-        .then(savedAppointment => {
-            console.log("New appointment saved", savedAppointment)
-            return appointment
-        })
-        .catch(error => {
-            console.log("Error saving new appointment", error)
-        })
-  };
+    const appointment = new AppointmentModel(appointmentData);
+    try {
+        const savedAppointment = await appointment.save();
+        console.log("New appointment saved", savedAppointment);
+        return savedAppointment; 
+    } catch (error) {
+        console.log("Error saving new appointment", error);
+        throw error; 
+    }
+};
   
 exports.getAllDoctorAppointments = async (doctorId) => {
     const doctorObjectId = new mongoose.Types.ObjectId(doctorId)

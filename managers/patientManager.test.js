@@ -8,7 +8,7 @@ describe('Patient Manager', () => {
     jest.resetAllMocks(); // Restablecer los mocks después de cada prueba
   });
 
-  test('Obtener todos los pacientes', async () => {
+  test('Get all patients', async () => {
     const patients = [{name: 'John'}, {name: 'Jane'}];
     patientModel.find.mockResolvedValue(patients);
 
@@ -18,7 +18,7 @@ describe('Patient Manager', () => {
     expect(patientModel.find).toHaveBeenCalledTimes(1);
   });
 
-  test('Crear un paciente', async () => {
+  test('Create a patient', async () => {
     const patientData = {name: 'John'};
     const newPatient = {_id: '123', ...patientData};
     patientModel.create.mockResolvedValue(newPatient);
@@ -30,7 +30,7 @@ describe('Patient Manager', () => {
     expect(patientModel.create).toHaveBeenCalledWith(patientData);
   });
 
-  test('Obtener un paciente por ID', async () => {
+  test('Get patient by ID', async () => {
     const patientId = '123';
     const patient = {_id: patientId, name: 'John'};
     patientModel.findById.mockResolvedValue(patient);
@@ -42,7 +42,7 @@ describe('Patient Manager', () => {
     expect(patientModel.findById).toHaveBeenCalledWith(patientId);
   });
 
-  test('Actualizar un paciente', async () => {
+  test('POST a patient', async () => {
     const patientId = '123';
     const patientData = {name: 'John'};
     const updatedPatient = {_id: patientId, ...patientData};
@@ -58,7 +58,7 @@ describe('Patient Manager', () => {
     );
   });
 
-  test('Eliminar un paciente', async () => {
+  test('Delete a patient', async () => {
     const patientId = '123';
     const deletedPatient = {_id: patientId, name: 'John'};
     patientModel.findOneAndRemove.mockResolvedValue(deletedPatient);
