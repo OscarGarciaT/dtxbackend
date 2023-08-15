@@ -6,7 +6,7 @@ const {Schema} = mongoose;
 
 const appointmentSchema = new Schema(
     {
-      motivo: {type: Schema.Types.String, required: true},
+      motivo: {type: Schema.Types.String},
       fecha_cita: {type: Schema.Types.String, required: true},
       hora_inicio_cita: {type: Schema.Types.String, required: true},
       hora_fin_cita:{type: Schema.Types.String, required: true},
