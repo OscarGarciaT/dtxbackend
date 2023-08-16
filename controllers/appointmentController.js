@@ -19,9 +19,15 @@ exports.createAppointment = async (req, res) => {
       newAppointmentData,
     );
     res.status(200).send(patient);
-  };
+};
+
+exports.get = async (req, res) => {
+  const {doctorId, appointmentId} = req.params;
+  const appointment = await appointmentManager.getAppointmentById(appointmentId);
+  res.status(200).send(appointment);
+};
   
-  exports.getAll = async (req, res) => {
+exports.getAll = async (req, res) => {
     try {
       const {doctorId} = req.params;
       const appointments = await appointmentManager.getAllDoctorAppointments(doctorId);
@@ -31,4 +37,32 @@ exports.createAppointment = async (req, res) => {
       res.status(500).send({message: 'Internal server error'});
     }
   
-  };
+};
+
+exports.update = async (req, res) => {
+    const {doctorId, appointmentId} = req.params;
+  
+    const {paciente_id, fecha_cita, hora_inicio_cita, hora_fin_cita, motivo} =
+      req.body.appointmentData;
+    
+    const newAppointmentData = {
+        paciente_id,
+        fecha_cita,
+        hora_inicio_cita,
+        hora_fin_cita,
+        motivo,
+    };
+  
+    const appointment = await appointmentManager.updateAppointment(
+      doctorId,
+      newAppointmentData,
+    );
+  
+    res.status(200).send(appointment);
+};
+
+exports.delete = async (req, res) => {
+  const {doctorId, appointmenId} = req.params;
+  const appointment = await appointmentManager.deleteAppointment(appointmentId);
+  res.status(200).send(appointment);
+};
