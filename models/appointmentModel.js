@@ -11,7 +11,8 @@ const appointmentSchema = new Schema(
       hora_inicio_cita: {type: Schema.Types.String, required: true},
       hora_fin_cita:{type: Schema.Types.String, required: true},
       paciente_id: {type: Schema.Types.ObjectId, ref: 'Patient', required: true},
-      doctor_id: {type: Schema.Types.ObjectId, ref: 'Doctor', required: true }
+      doctor_id: {type: Schema.Types.ObjectId, ref: 'Doctor', required: true },
+      asistencia: {type: Schema.Types.Boolean, default: false}
     },
     {
       timestamps: true,

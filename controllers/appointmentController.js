@@ -42,7 +42,7 @@ exports.getAll = async (req, res) => {
 exports.update = async (req, res) => {
     const {doctorId, appointmentId} = req.params;
   
-    const {paciente_id, fecha_cita, hora_inicio_cita, hora_fin_cita, motivo} =
+    const {paciente_id, fecha_cita, hora_inicio_cita, hora_fin_cita, motivo, asistencia} =
       req.body.appointmentData;
     
     const newAppointmentData = {
@@ -51,6 +51,7 @@ exports.update = async (req, res) => {
         hora_inicio_cita,
         hora_fin_cita,
         motivo,
+        asistencia
     };
   
     const appointment = await appointmentManager.updateAppointment(
