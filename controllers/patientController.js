@@ -130,3 +130,8 @@ exports.delete = async (req, res) => {
   const patient = await patientManager.deletePatient(patientId);
   res.status(200).send(patient);
 };
+
+exports.getAllDiagnoses = async (req, res) => {
+  const diagnoses = await patientManager.getAllDiagnoses();
+  res.status(200).send(diagnoses)
+}
