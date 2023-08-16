@@ -54,7 +54,7 @@ exports.update = async (req, res) => {
     };
   
     const appointment = await appointmentManager.updateAppointment(
-      doctorId,
+      appointmentId,
       newAppointmentData,
     );
   
