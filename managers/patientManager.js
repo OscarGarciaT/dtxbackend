@@ -30,16 +30,17 @@ exports.getAllPatientsByDoctor = async (targetDoctorId, searchQuery) => {
 
 exports.createPatient = async (doctorId, patientData) => {
   const doctorObjectId = new mongoose.Types.ObjectId(doctorId);
-  patientData.doctor_id =  doctorObjectId;
+  patientData.doctor_id = doctorObjectId;
   const patient = new PatientModel(patientData);
-  patient.save()
-    .then(savedPatient => {
-      console.log("Patient saved succesfuly", savedPatient)
-    })
-    .catch(error => {
-      console.log("Error saving new patient", error)
-    })
-  return patient;
+  
+  try {
+    const savedPatient = await patient.save(); // Wait for the save operation to complete
+    console.log("Patient saved successfully", savedPatient);
+    return savedPatient; // Return the saved patient object
+  } catch (error) {
+    console.log("Error saving new patient", error);
+    throw error; // Rethrow the error to be handled elsewhere
+  }
 };
 
 exports.getPatientById = async (patientId) => {
