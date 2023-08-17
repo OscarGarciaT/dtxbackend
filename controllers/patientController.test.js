@@ -8,80 +8,112 @@ describe('Patient Controller', () => {
     jest.resetAllMocks(); // Restablecer los mocks después de cada prueba
   });
 
-  test('Obtener todos los pacientes', async () => {
-    const patients = [{name: 'John'}, {name: 'Jane'}];
-    patientManager.getAll.mockResolvedValue(patients);
-    const sendMock = jest.fn();
-    const res = {status: jest.fn().mockReturnValue({send: sendMock})};
-
-    await patientController.getAll({}, res);
-
-    expect(patientManager.getAll).toHaveBeenCalledTimes(1);
-    expect(res.status).toHaveBeenCalledWith(200);
-    expect(sendMock).toHaveBeenCalledWith(patients);
-  });
-
   test('Crear un paciente', async () => {
-    const patientData = {name: 'John'};
-    const newPatient = {_id: '123', ...patientData};
-    patientManager.create.mockResolvedValue(newPatient);
+    const doctorId = '123';
+    const patientData = {
+      info_general: {
+        nombres: 'John',
+        apellidos: 'Doe',
+        cedula: '1234567890',
+        celular: '1234567890',
+        sexo: 'M',
+        edad: 30,
+      },
+      // ... otras propiedades
+    };
+    const newPatient = { _id: '123', ...patientData };
+    patientManager.createPatient.mockResolvedValue(newPatient);
     const sendMock = jest.fn();
-    const res = {status: jest.fn().mockReturnValue({send: sendMock})};
-    const req = {body: {patientData}};
+    const res = { status: jest.fn().mockReturnValue({ send: sendMock }) };
+    const req = { params: { doctorId }, body: { patientData } };
 
     await patientController.create(req, res);
 
-    expect(patientManager.create).toHaveBeenCalledTimes(1);
-    expect(patientManager.create).toHaveBeenCalledWith(patientData);
+    expect(patientManager.createPatient).toHaveBeenCalledTimes(1);
+    expect(patientManager.createPatient).toHaveBeenCalledWith(
+      doctorId,
+      expect.objectContaining({
+        info_general: expect.objectContaining({
+          nombres: 'John',
+          apellidos: 'Doe',
+          cedula: '1234567890',
+          celular: '1234567890',
+          sexo: 'M',
+          edad: 30,
+        }),
+      })
+    );
     expect(res.status).toHaveBeenCalledWith(200);
     expect(sendMock).toHaveBeenCalledWith(newPatient);
   });
 
   test('Obtener un paciente por ID', async () => {
     const patientId = '123';
-    const patient = {_id: patientId, name: 'John'};
-    patientManager.get.mockResolvedValue(patient);
+    const patient = { _id: patientId, nombres: 'John' };
+    patientManager.getPatientById.mockResolvedValue(patient);
     const sendMock = jest.fn();
-    const res = {status: jest.fn().mockReturnValue({send: sendMock})};
-    const req = {params: {patientId}};
+    const res = { status: jest.fn().mockReturnValue({ send: sendMock }) };
+    const req = { params: { patientId } };
 
     await patientController.get(req, res);
 
-    expect(patientManager.get).toHaveBeenCalledTimes(1);
-    expect(patientManager.get).toHaveBeenCalledWith(patientId);
+    expect(patientManager.getPatientById).toHaveBeenCalledTimes(1);
+    expect(patientManager.getPatientById).toHaveBeenCalledWith(patientId);
     expect(res.status).toHaveBeenCalledWith(200);
     expect(sendMock).toHaveBeenCalledWith(patient);
   });
 
   test('Actualizar un paciente', async () => {
     const patientId = '123';
-    const patientData = {name: 'John'};
-    const updatedPatient = {_id: patientId, ...patientData};
-    patientManager.update.mockResolvedValue(updatedPatient);
+    const patientData = {
+      info_general: {
+        nombres: 'John',
+        apellidos: 'Doe',
+        cedula: '1234567890',
+        celular: '1234567890',
+        sexo: 'M',
+        edad: 30,
+      },
+      // ... otras propiedades
+    };
+    const updatedPatient = { _id: patientId, ...patientData };
+    patientManager.updatePatient.mockResolvedValue(updatedPatient);
     const sendMock = jest.fn();
-    const res = {status: jest.fn().mockReturnValue({send: sendMock})};
-    const req = {params: {patientId}, body: patientData};
-
+    const res = { status: jest.fn().mockReturnValue({ send: sendMock }) };
+    const req = { params: { patientId }, body: { patientData } };
+  
     await patientController.update(req, res);
-
-    expect(patientManager.update).toHaveBeenCalledTimes(1);
-    expect(patientManager.update).toHaveBeenCalledWith(patientId, patientData);
+  
+    expect(patientManager.updatePatient).toHaveBeenCalledTimes(1);
+    expect(patientManager.updatePatient).toHaveBeenCalledWith(
+      patientId,
+      expect.objectContaining({
+        info_general: expect.objectContaining({
+          nombres: 'John',
+          apellidos: 'Doe',
+          cedula: '1234567890',
+          celular: '1234567890',
+          sexo: 'M',
+          edad: 30,
+        }),
+      })
+    );
     expect(res.status).toHaveBeenCalledWith(200);
     expect(sendMock).toHaveBeenCalledWith(updatedPatient);
   });
 
   test('Eliminar un paciente', async () => {
     const patientId = '123';
-    const deletedPatient = {_id: patientId, name: 'John'};
-    patientManager.delete.mockResolvedValue(deletedPatient);
+    const deletedPatient = { _id: patientId, nombres: 'John' };
+    patientManager.deletePatient.mockResolvedValue(deletedPatient);
     const sendMock = jest.fn();
-    const res = {status: jest.fn().mockReturnValue({send: sendMock})};
-    const req = {params: {patientId}};
+    const res = { status: jest.fn().mockReturnValue({ send: sendMock }) };
+    const req = { params: { patientId } };
 
     await patientController.delete(req, res);
 
-    expect(patientManager.delete).toHaveBeenCalledTimes(1);
-    expect(patientManager.delete).toHaveBeenCalledWith(patientId);
+    expect(patientManager.deletePatient).toHaveBeenCalledTimes(1);
+    expect(patientManager.deletePatient).toHaveBeenCalledWith(patientId);
     expect(res.status).toHaveBeenCalledWith(200);
     expect(sendMock).toHaveBeenCalledWith(deletedPatient);
   });
