@@ -20,3 +20,32 @@ exports.getAllDoctorAppointments = async (doctorId) => {
     const appointments = await AppointmentModel.find({doctor_id:doctorObjectId })
     return appointments
 };
+
+exports.getAppointmentById = async (appointmentId) => {
+    const appointmentObjectId = new mongoose.Types.ObjectId(appointmentId);
+    const appointment = AppointmentModel.findById(appointmentObjectId);
+    return appointment;
+};
+
+exports.updateAppointment = async (appointmentId, appointmentData) => {
+    AppointmentModel.updateOne({_id: appointmentId}, appointmentData)
+      .then(updatedAppointment => {
+        console.log('Appointment updated succesfully', updatedAppointment);
+      })
+      .catch(error => {
+        console.log('Error updating appointment')
+      })
+    return AppointmentModel.findById(appointmentId)
+};
+  
+exports.deleteAppointment = async (appointmentId) => {
+    const appointment = AppointmentModel.findById(appointmentId);
+    AppointmentModel.deleteOne({_id: appointmentId})
+      .then(result => {
+        console.log('Appointment deleted successfully', result);
+      })
+      .catch(error => {
+        console.error('Error deleting appointment', error);
+      })
+      return appointment;
+};
