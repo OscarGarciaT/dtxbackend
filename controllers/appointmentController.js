@@ -63,7 +63,7 @@ exports.update = async (req, res) => {
 };
 
 exports.delete = async (req, res) => {
-  const {doctorId, appointmenId} = req.params;
+  const {doctorId, appointmentId} = req.params;
   const appointment = await appointmentManager.deleteAppointment(appointmentId);
   res.status(200).send(appointment);
 };
