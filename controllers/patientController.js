@@ -29,6 +29,7 @@ exports.create = async (req, res) => {
       salud_bucal,
       signos_vitales,
       sistema_estomatognatico,
+      odontograma,
     } = req.body.patientData;
 
     const newPatientData = {
@@ -48,6 +49,7 @@ exports.create = async (req, res) => {
       salud_bucal,
       signos_vitales,
       sistema_estomatognatico,
+      odontograma,
     };
 
     const patient = await patientManager.createPatient(
